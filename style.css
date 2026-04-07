@@ -1,0 +1,650 @@
+/* --- SISTEM WARNA ADAPTIF --- */
+@font-face {
+  font-family: 'op';
+  src: url(font/one\ piece\ font.ttf);
+}
+
+/* Transisi Halus untuk Semua Section */
+section {
+    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                color 0.8s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* KONDISI 1: MODE LIGHT (Default) */
+/* Home (1), Akad (3), Jam (5), Copyright (7) -> PUTIH */
+.light-theme section:nth-child(odd) {
+    background-color: #ffffff;
+    color: #111111;
+}
+/* Mempelai (2), RSVP (4), Sosmed (6) -> HITAM */
+.light-theme section:nth-child(even) {
+    background-color: #0a0a0a;
+    color: #ffffff;
+}
+
+/* KONDISI 2: MODE DARK (Inversi Total) */
+/* Home (1), Akad (3), Jam (5), Copyright (7) -> HITAM */
+.dark-theme section:nth-child(odd) {
+    background-color: #0a0a0a;
+    color: #ffffff;
+}
+/* Mempelai (2), RSVP (4), Sosmed (6) -> PUTIH */
+.dark-theme section:nth-child(even) {
+    background-color: #ffffff;
+    color: #111111;
+}
+
+/* --- BACKGROUND AESTHETIC OTOMATIS --- */
+/* Muncul hanya di section yang sedang berwarna HITAM */
+section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 40%),
+        url('assets/one\ piece.webp');
+    opacity: 40%;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.theme-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logo-btn {
+  width: 60px;   /* atur sesuai kebutuhan */
+  height: 60px;
+  object-fit: contain;
+}
+
+.logo-btn-onepiece {width: 120px;   /* atur sesuai kebutuhan */
+  height: 120px;
+  object-fit: contain;}
+
+/* Tampilkan Aesthetic saat section jadi HITAM */
+.light-theme section:nth-child(even)::before,
+.dark-theme section:nth-child(odd)::before {
+    opacity: 1;
+}
+
+/* Pastikan Konten Tetap di Atas Background Aesthetic */
+.section .content {
+    position: relative;
+    z-index: 2;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    transition: background 0.6s ease;
+}
+
+/* THEME HANDLING */
+.light-theme .hero-section { background: var(--bg-light); color: var(--text-light); }
+.dark-theme .hero-section { background: var(--bg-dark); color: var(--text-dark); }
+
+
+/* --- NAVBAR ADAPTIF --- */
+.navbar {
+    position: fixed;
+    top: 0; width: 100%; height: 85px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 60px; z-index: 1000;
+    
+    /* Efek Blur Kaca agar Teks Tetap Standout */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    /* Garis bawah tipis yang menyesuaikan warna teks */
+    border-bottom: 1px solid currentColor;
+    opacity: 0.95;
+    
+    /* Transisi warna teks dan background */
+    transition: background-color 0.8s ease, color 0.8s ease, border-color 0.8s ease;
+}
+
+/* Memaksa semua teks di dalam Nav mengikuti warna Tema */
+.navbar, 
+.nav-title, 
+.nav-group a {
+    color: inherit !important;  
+}
+
+/* Hover Effect yang menyesuaikan mode */
+.nav-group a:hover {
+    opacity: 0.6;
+    text-decoration: underline;
+}
+
+/* Background Navbar berdasarkan Mode */
+.light-theme .navbar {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.dark-theme .navbar {
+   background-color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* NAVBAR REVISED */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 80px;
+  position: fixed;
+  top: 0; width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Distribusi Ruang */
+.nav-left, .nav-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.nav-right {
+  justify-content: flex-end; /* Tombol tema selalu di kanan */
+}
+
+.nav-center {
+  flex: 0 0 auto; /* Tengah tidak rakus ruang, biarkan samping yang menekan */
+  font-family: 'op';
+}
+
+.brand {
+  font-family: 'op', serif;
+  font-size: 1.8rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Navigasi Desktop */
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+/* Tombol Reset */
+.menu-toggle, .theme-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* TAMPILAN MOBILE (< 768px) */
+@media (max-width: 1000px) {
+  .nav-links {
+    display: none; /* Sembunyikan menu teks */
+  }
+  
+  .menu-toggle {
+    display: block; /* Munculkan hamburger */
+  }
+
+  .brand {
+    font-size: 3.4rem;
+  }
+}
+
+/* TAMPILAN DESKTOP (> 769px) */
+@media (min-width: 1000px) {
+  .menu-toggle {
+    display: none; /* Sembunyikan hamburger */
+  }
+}
+
+/* Overlay Menu */
+.menu-overlay {
+  position: fixed;
+  top: 0; left: -100%;
+  width: 100%; height: 100vh;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  transition: 0.4s ease;
+  z-index: 999;
+}
+
+.menu-overlay.active {
+  left: 0;
+}
+/* SECTIONS */
+.section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.light { background: var(--bg-light); color: var(--text-light); }
+.dark { background: var(--bg-dark); color: var(--text-dark); }
+
+.overlay-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/black-paper.png');
+    opacity: 0.3;
+}
+
+/* TYPOGRAPHY */
+h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 10vw, 5rem); margin: 20px 0; }
+h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; }
+
+/* ICONS & BUTTONS */
+.icon-accent { color: var(--accent); margin-bottom: 15px; }
+.social-icons { display: flex; justify-content: center; gap: 30px; margin: 30px 0; }
+.social-icons i { width: 24px; height: 24px; transition: transform 0.3s; }
+.social-icons a:hover i { transform: scale(1.2); color: var(--accent); }
+
+.btn-primary {
+    background: var(--text-dark);
+    color: var(--bg-dark);
+    padding: 12px 30px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+/* TIMER */
+#timer { display: flex; gap: 20px; justify-content: center; margin-top: 20px; }
+.t-box { background: rgba(150,150,150,0.1); padding: 15px; min-width: 80px; border-radius: 4px; }
+.t-box span { display: block; font-size: 2rem; font-weight: bold; }
+.t-box small { font-size: 0.6rem; letter-spacing: 1px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .navbar {  height: auto; padding: 10px; }
+    .nav-links-left{ display: none; }
+    
+}
+
+
+@media (max-width: 768px) {
+    /* 1. Sembunyikan Navbar Atasmu yang sekarang */
+
+    /* 2. Tampilkan Navbar Bawah */
+
+    /* Styling Icon & Teks Kecil */
+
+    /* Penyesuaian saat Mode Gelap */
+    .dark-theme .mobile-bottom-nav {
+        background: var(--bg-dark);
+        color: var(--text-light);
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+}
+/* Pastikan ini berada di paling bawah file style.css */
+
+    /* 1. Paksa sembunyikan navbar atas (tambah !important) */
+    
+
+    /* 2. Tampilkan Navbar Bawah dengan paksa */
+
+
+/* Copy juga ini untuk Mode Gelapnya */
+.dark-theme .mobile-bottom-nav {
+    background-color: #0a0a0a !important;
+    color: #ffffff !important;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Container untuk menyejajarkan kartu */
+.event-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Jarak antar kartu */
+    margin-top: 40px;
+    flex-wrap: wrap; /* Agar otomatis turun di layar kecil */
+    padding: 0 20px;
+}
+
+/* Styling Kartu */
+.event-card {
+    flex: 1;
+    min-width: 300px; /* Lebar minimal kartu */
+    max-width: 400px; /* Lebar maksimal agar tidak terlalu lebar di desktop */
+    padding: 40px 30px;
+    border: 1px solid currentColor; /* Mengikuti warna tema (Hitam/Putih) */
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-card:hover {
+    transform: translateY(-10px);
+}
+
+.card-icon {
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.card-line {
+    width: 50px;
+    height: 2px;
+    background: currentColor;
+    margin: 15px 0;
+    opacity: 0.3;
+}
+
+.event-card h3 {
+    letter-spacing: 3px;
+    font-size: 1.2rem;
+}
+
+.event-card .time {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.event-card .location {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    opacity: 0.8;
+}
+
+/* Tombol Maps di dalam kartu */
+.btn-maps {
+    padding: 10px 20px;
+    border: 1px solid currentColor;
+    text-decoration: none;
+    color: inherit;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+}
+
+.btn-maps:hover {
+    background: currentColor;
+    color: var(--primary-black); /* Inversi warna saat hover */
+}
+
+/* Responsif Mobile: Kartu menumpuk rapi */
+@media (max-width: 768px) {
+    .event-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .event-card {
+        width: 100%;
+        min-width: unset;
+    }
+}
+
+/* Container Utama RSVP */
+.rsvp-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    background: rgba(255, 255, 255, 0.05); /* Glassmorphism */
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px; /* Kesan kaku/arsitek lebih elegan daripada membulat */
+    text-align: center;
+}
+
+.rsvp-icon {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.rsvp-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.rsvp-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0.7;
+    font-style: italic;
+}
+
+/* Form & Input Logic */
+.rsvp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.input-row {
+    display: flex;
+    gap: 20px;
+}
+
+.input-group {
+    position: relative;
+    flex: 1;
+}
+
+.rsvp-form input, 
+.rsvp-form select, 
+.rsvp-form textarea {
+    width: 100%;
+    padding: 15px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid currentColor; /* Mengikuti mode dark/light */
+    color: inherit;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+/* Efek Label Melayang (Floating Label) */
+.input-group label {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    pointer-events: none;
+    transition: 0.3s;
+    opacity: 0.5;
+}
+
+/* Saat input diisi atau difokuskan */
+.rsvp-form input:focus ~ label,
+.rsvp-form input:not(:placeholder-shown) ~ label,
+.rsvp-form select:focus ~ label,
+.rsvp-form select:valid ~ label,
+.rsvp-form textarea:focus ~ label,
+.rsvp-form textarea:not(:placeholder-shown) ~ label {
+    top: -10px;
+    font-size: 0.65rem;
+    opacity: 1;
+    color: #d4af37; /* Aksen Gold untuk kemewahan */
+}
+
+/* Tombol Kirim */
+.btn-rsvp {
+    margin-top: 20px;
+    padding: 18px;
+    background: transparent;
+    border: 1px solid currentColor;
+    color: inherit;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: 0.4s;
+}
+
+.btn-rsvp:hover {
+    background: currentColor;
+    color: var(--bg-color); /* Inversi warna saat hover */
+}
+
+/* Penyesuaian Mobile */
+@media (max-width: 600px) {
+    .input-row { flex-direction: column; gap: 25px; }
+    .rsvp-container { padding: 40px 20px; border: none; background: transparent; }
+}
+
+.info-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.info-box {
+    flex: 1 1 300px; /* Responsif: lebar dasar 300px, bisa melebar */
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 4px;
+    transition: 0.3s ease;
+}
+
+.info-box:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-5px);
+}
+
+.info-icon {
+    width: 30px; height: 30px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.info-box h3 {
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+    opacity: 0.7;
+}
+
+/* Styling Rekening */
+.card-display {
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 8px;
+}
+.acc-number { font-size: 1.5rem; letter-spacing: 2px; margin: 10px 0; font-weight: bold; }
+
+/* Styling Social Media */
+.social-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.social-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    text-decoration: none;
+    color: inherit;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+    transition: 0.3s;
+}
+.social-item:hover { border-color: currentColor; background: transparent; }
+
+/* Tombol & Alamat */
+.address-text { font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; }
+
+.btn-copy, .btn-maps {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid currentColor;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    transition: 0.3s;
+}
+
+.btn-copy:hover, .btn-maps:hover {
+    background: white;
+    color: black;
+}
+
+#music-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border: none;
+  border-radius: 50%;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+#music-icon {
+  width: 35px;
+}
+
+/* animasi muter */
+.rotate {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
